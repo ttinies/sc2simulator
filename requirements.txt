@@ -1,0 +1,6 @@
+pytest
+pytest-cov
+coveralls
+sc2gameLobby
+sc2maptool
+sc2players
