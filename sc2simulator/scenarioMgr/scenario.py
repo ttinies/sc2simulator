@@ -1,4 +1,5 @@
 
+from sc2simulator import constants as c
 from sc2simulator.scenarioMgr.scenarioPlayer import ScenarioPlayer
 from sc2simulator.scenarioMgr.scenarioUnit import ScenarioUnit
 
@@ -12,7 +13,7 @@ class Scenario(object):
         self.units = {}
         self.upgrades = {}
         self.startloop = 1
-        self.duration = 0.0
+        self.duration = c.DEF_DURATION
     ############################################################################
     def __str__(self):  return self.__repr__()
     def __repr__(self):
