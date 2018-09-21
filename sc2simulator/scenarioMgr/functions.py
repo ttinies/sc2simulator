@@ -29,6 +29,12 @@ def xmlChildrenToDict(node):
 
 
 ################################################################################
+def getBankPath(bankName):
+    """identify the absolute path to the provided bankName"""
+    return os.path.join(c.PATH_BANKS, "%s.%s"%(bankName, c.SC2_BANK_EXT))
+
+
+################################################################################
 def getSectionByName(sections, name, key="name", default=None):
     """identify the first section with matching key among 'sections'"""
     for s in sections:

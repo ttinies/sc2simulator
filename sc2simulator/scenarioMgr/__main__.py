@@ -4,10 +4,9 @@
 import os
 
 from sc2simulator import constants as c
-from sc2simulator.scenarioMgr import parseBankXml
-
+from sc2simulator.scenarioMgr import getBankPath, parseBankXml
 
 if __name__=="__main__":
-    xmlfile = os.path.join(c.PATH_BANKS, "test2.SC2Bank")
+    xmlfile = getBankPath("test2")
     parseBankXml(xmlfile, debug=True)
 
