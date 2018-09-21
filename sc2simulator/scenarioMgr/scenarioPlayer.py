@@ -3,7 +3,7 @@
 ################################################################################
 class ScenarioPlayer(object):
     ############################################################################
-    def __init__(self, tag):
+    def __init__(self, number, units, upgrades):
         self.number     = number
         self._units     = units
         self.upgrades   = upgrades

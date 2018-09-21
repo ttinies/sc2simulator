@@ -1,7 +1,7 @@
 
 import os
 import re
-import xml
+import xml.etree.ElementTree
 
 from sc2simulator.scenarioMgr.bank import Bank
 from sc2simulator.scenarioMgr.scenario import Scenario
@@ -45,7 +45,7 @@ def getSectionByNameAll(sections, name, key="name"):
 
 ################################################################################
 def parseBankXml(xmlpath, debug=False):
-    root = xmletree.ElementTree.parse(xmlpath).getroot()
+    root = xml.etree.ElementTree.parse(xmlpath).getroot()
     bankName = re.sub("\..*", "", os.path.basename(xmlpath)) # strip path and extension
     retBank = Bank(bankName)
     sections = root.getchildren()
@@ -71,8 +71,8 @@ def parseBankXml(xmlpath, debug=False):
                 unitTag  = int(unitMeta[0])
                 unitAttr = unitMeta[1].lower()
                 attrs    = xmlChildrenToDict(key)
-                if len(leaves) == 1 and list(leaves.keys())[0] == "value":
-                    attrs = {unitAttr : attrs["values"]}
+                if len(attrs) == 1 and list(attrs.keys())[0] == "value":
+                    attrs = {unitAttr : attrs["value"]}
                 u = scenario.updateUnit(unitTag, **attrs)
         else:
             playerList = re.findall("UpgradesPlayer(\d+)", dataType)
@@ -88,8 +88,6 @@ def parseBankXml(xmlpath, debug=False):
         print(retBank)
         print("*"*80)
         for sName, scenario in retBank.scenarios.items():
-            if isinstance(sName, int): continue
-            print(sName)
             print(scenario)
             for p in scenario.players.values():
                 print("  %s"%p)
