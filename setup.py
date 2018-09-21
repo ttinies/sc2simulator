@@ -22,6 +22,7 @@ VERSION = None
 
 # What packages are required for this module to be executed?
 REQUIRED = [
+    "sc2common",
     "sc2gameLobby",
     "sc2maptool",
     "sc2players",
