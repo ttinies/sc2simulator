@@ -53,17 +53,18 @@ def parseBankXml(xmlpath, debug=False):
     if not caseNameSection: return retBank # must define the "TestCases" section
     sections.remove(caseNameSection) # this meta section doesn't define scenario + player data
     for key in caseNameSection.getchildren(): # acquire each scenario's meta data
-        name = xmlChildrenToDict(key)["value"]
+        name = key.get("name")
         s = Scenario(name)
         retBank.addScenario(s)
     for s in sections: # iterate all scenario + player sections for data
         sectionNames = s.get("name").split("|")
         scenarioName = sectionNames[0]
-        dataType     = sectionNames[1]
+        playerID     = int(re.findall("P(\d+)", sectionNames[1]).pop())
+        dataType     = sectionNames[2]
         scenario = retBank[scenarioName]
         if dataType == "UnitIndex":
             for key in s.getchildren(): # ensure all tags are represented as units in this scenario
-                tag = xmlChildrenToDict(key)["value"]
+                tag = key.get("name")
                 scenario.addUnit(tag)
         elif dataType == "UnitData":
             for key in s.getchildren(): # load unit data for all players in this scenario
@@ -73,16 +74,13 @@ def parseBankXml(xmlpath, debug=False):
                 attrs    = xmlChildrenToDict(key)
                 if len(attrs) == 1 and list(attrs.keys())[0] == "value":
                     attrs = {unitAttr : attrs["value"]}
-                u = scenario.updateUnit(unitTag, **attrs)
-        else:
-            playerList = re.findall("UpgradesPlayer(\d+)", dataType)
-            if not playerList:
-                print("WARNING: skipped unknown data type: %s"%dataType)
-                continue
-            playerID = int(playerList[0])
+                u = scenario.updateUnit(unitTag, owner=playerID, **attrs)
+        elif dataType == "Upgrades":
             for key in s.getchildren(): # ensure all tags are represented as units in this scenario
                 value = xmlChildrenToDict(key)["value"]
                 scenario.addUpgrade(playerID, value)
+        else:
+            print("WARNING: skipped unknown data type: %s"%dataType)
     if debug:
         print("*"*80)
         print(retBank)
