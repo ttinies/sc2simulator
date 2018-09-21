@@ -9,7 +9,7 @@ class Bank(object):
     ############################################################################
     def __str__(self):  return self.__repr__()
     def __repr__(self):
-        return "<%s %s (%d)>"%(self.__class__.__name__, self.name, len(self))
+        return "<%s %s scenarios:%d>"%(self.__class__.__name__, self.name, len(self))
     ############################################################################
     def __len__(self):
         return len(self.scenarios)
