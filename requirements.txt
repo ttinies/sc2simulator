@@ -1,6 +1,7 @@
 pytest
 pytest-cov
 coveralls
+sc2common
 sc2gameLobby
 sc2maptool
 sc2players
