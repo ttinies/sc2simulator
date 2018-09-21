@@ -2,6 +2,7 @@
 
 ################################################################################
 class ScenarioUnit(object):
+    """sufficient info to fully represent a unit within a scenario"""
     ############################################################################
     def __init__(self, tag):
         self.tag        = tag # as reported by the mini-editor

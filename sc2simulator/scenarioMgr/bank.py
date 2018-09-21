@@ -2,6 +2,7 @@
 
 ################################################################################
 class Bank(object):
+    """contain all defined scenarios for a given map represented by 'name'"""
     ############################################################################
     def __init__(self, name):
         self.name = name

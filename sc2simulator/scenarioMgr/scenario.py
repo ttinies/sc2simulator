@@ -6,6 +6,7 @@ from sc2simulator.scenarioMgr.scenarioUnit import ScenarioUnit
 
 ################################################################################
 class Scenario(object):
+    """contains all information required to set up a scenario"""
     ############################################################################
     def __init__(self, name):
         self.name = name
@@ -20,7 +21,8 @@ class Scenario(object):
         return "<%s '%s' players:%s>"%(self.__class__.__name__,
             self.name, list(self.players.keys()))
     ############################################################################
-    def addPlayer(self,idx):
+    def addPlayer(self, idx):
+        """add a definition for a player within a Scenario"""
         idx = int(idx) # ensure value is an integer
         if idx in self.players:
             print("WARNING: attempted to add already existing player %d: %s"%(
@@ -32,6 +34,7 @@ class Scenario(object):
         self.players[idx] = p
     ############################################################################
     def addUnit(self, tag):
+        """add a definition for a unit within a Scenario"""
         tag = int(tag) # ensure unit uid is always an integer
         if tag in self.units: # catch possible redundant definitions
             print("WARNING: unit tag %d already exists in %s as %s"%(
@@ -42,11 +45,13 @@ class Scenario(object):
         return newUnit
     ############################################################################
     def addUpgrade(self, player, upgradeName):
+        """add a definition for an upgrade within a Scenario"""
         if player not in self.players:
             self.addPlayer(player)
         self.upgrades[player].append(upgradeName)
     ############################################################################
     def updateUnit(self, tag, **attrs):
+        """include more information to better represent the specified unit"""
         try:                u = self.units[tag] # lookup previously defined unit
         except KeyError:    u = self.addUnit(tag) # define a new unit
         for k,v in attrs.items(): # assign attributes into unit

@@ -2,6 +2,7 @@
 
 ################################################################################
 class ScenarioPlayer(object):
+    """sufficient info to fully represent a player within a scenario"""
     ############################################################################
     def __init__(self, number, units, upgrades):
         self.number     = number

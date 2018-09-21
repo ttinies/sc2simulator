@@ -45,6 +45,7 @@ def getSectionByNameAll(sections, name, key="name"):
 
 ################################################################################
 def parseBankXml(xmlpath, debug=False):
+    """interpret scenario bank XML data into usable python objects"""
     root = xml.etree.ElementTree.parse(xmlpath).getroot()
     bankName = re.sub("\..*", "", os.path.basename(xmlpath)) # strip path and extension
     retBank = Bank(bankName)
