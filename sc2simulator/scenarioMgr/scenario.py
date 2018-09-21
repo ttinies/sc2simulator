@@ -51,7 +51,7 @@ class Scenario(object):
         except KeyError:    u = self.addUnit(tag) # define a new unit
         for k,v in attrs.items(): # assign attributes into unit
             setattr(u, k, v)
-        if u.player and u.player not in self.players: # ensure that this unit's owner is represented as a player
-            self.addPlayer(u.player)
+        if u.owner and u.owner not in self.players: # ensure that this unit's owner is represented as a player
+            self.addPlayer(u.owner)
         return u
 

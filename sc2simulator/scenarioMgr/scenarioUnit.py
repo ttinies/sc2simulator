@@ -5,7 +5,7 @@ class ScenarioUnit(object):
     ############################################################################
     def __init__(self, tag):
         self.tag        = tag # as reported by the mini-editor
-        self.player     = 0
+        self.owner      = 0
         self.position   = None
         self.facing     = 0.0
         self.nametype   = ""

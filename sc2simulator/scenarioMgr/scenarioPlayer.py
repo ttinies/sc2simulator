@@ -23,7 +23,7 @@ class ScenarioPlayer(object):
     ############################################################################
     @property
     def units(self):
-        return [u for u in self._units.values() if u.player == self.number]
+        return [u for u in self._units.values() if u.owner == self.number]
     ############################################################################
     @property
     def upgradeObjects(self):
