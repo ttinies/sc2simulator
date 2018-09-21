@@ -37,7 +37,7 @@ class Scenario(object):
                 tag, self, self.units[tag]))
             return
         newUnit = ScenarioUnit(tag)
-        self.unts[tag] = newUnit
+        self.units[tag] = newUnit
         return newUnit
     ############################################################################
     def addUpgrade(self, player, upgradeName):
