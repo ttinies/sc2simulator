@@ -3,6 +3,7 @@ import os
 import re
 import xml.etree.ElementTree
 
+from sc2simulator import constants as c
 from sc2simulator.scenarioMgr.bank import Bank
 from sc2simulator.scenarioMgr.scenario import Scenario
 
