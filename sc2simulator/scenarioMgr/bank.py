@@ -14,9 +14,20 @@ class Bank(object):
     ############################################################################
     def __len__(self):
         return len(self.scenarios)
+    ############################################################################
+    def __iter__(self):
+        return iter(self.scenarios.values())
+    ############################################################################
     def __getitem__(self, key):
         return self.scenarios[key]
+    ############################################################################
+    @property
+    def available(self):
+        """the names of the available scenarios"""
+        return list(self.scenarios.keys())
+    ############################################################################
     def addScenario(self, scenario):
+        """ensure the provided scenario is identified in this bank"""
         if scenario.name in self.scenarios:
             raise KeyError("cannot add '%s' because %s is already defined"%(
                 scenario.name, scenario))
