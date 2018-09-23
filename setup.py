@@ -17,7 +17,7 @@ DESCRIPTION = "design, run and test desired situations using human, AI, bot or c
 URL = "https://github.com/ttinies/sc2simulator"
 EMAIL = "help.fool@versentiedge.com"
 AUTHOR = "ttinies"
-REQUIRES_PYTHON = ">2.6"
+REQUIRES_PYTHON = ">3.4"
 VERSION = None
 
 # What packages are required for this module to be executed?
