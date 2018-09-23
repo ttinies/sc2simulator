@@ -41,7 +41,6 @@ def generateScenario(mapObj, options, cfg):
     try:
         import sc2maps # closed source package
         mData = sc2maps.MapData(mapName=mapObj.name)
-        print(mData)
         dim = mData.dimensions.toCoords()
     except ModuleNotFoundError as e:
         dim = convertStrToPoint(options.dimensions)

@@ -10,7 +10,6 @@ import random
 try:
     import sc2techTree # closed source package
     techtree = sc2techTree.getLastTree()
-    print(techtree)
 except ModuleNotFoundError:
     techtree = None
 
