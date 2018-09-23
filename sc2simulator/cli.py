@@ -89,7 +89,7 @@ def main(options=None):
         scenarios = getSetup(specifiedMap, options, cfg)
         for scenario in scenarios:
             epoch = int(time.time())
-             # TODO -- load scenario specific
+            # TODO -- load scenario specific
             cfg.scenario = scenario # each scenario needs to set up its own designated units
             for curLoop in range(options.loops): # each loop of each scenario gets its own unique replay
                 cfg.replay = outTemplate%(epoch, curLoop)
