@@ -17,4 +17,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
 
 from sc2simulator.__version__ import *
-
+from sc2simulator.cli import main() as run
