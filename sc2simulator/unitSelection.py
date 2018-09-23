@@ -69,23 +69,23 @@ def selectUnitList(available, rules, mapData, numFails=0):
 
 
 ################################################################################
-def pickRandomUnit(choices, rules, motherShipPicked=False):
+def pickRandomUnit(choices, rules, ms=False):
     ############################################################################
     def isValidSelection(unit):
         """verify that this unit doesn't violate any of the determined rules"""
-        if not unit.isUnit:                                     return False
+        if not unit.isUnit:                  return False
         if unit.isStructure:
-            if not unit.weapons:                                return False # only defense structures are allowed units
-            if not rules.allowDefense:                          return False # defense structures are only allowed if specified
-        if rules.air        and not unit.isAir:                 return False
-        if rules.ground     and     unit.isAir:                 return False
-        if                     unit.dps     > rules.maxdps:     return False
-        if                     unit.hits    > rules.maxhp:      return False
+            if not unit.weapons:             return False # only defense structures are allowed units
+            if not rules.allowDefense:       return False # defense structures are only allowed if specified
+        if  rules.air    and not unit.isAir: return False
+        if  rules.ground and     unit.isAir: return False
+        if  unit.dps     > rules.maxdps:     return False
+        if  unit.hits    > rules.maxhp:      return False
         cost = unit.cost
-        if                     cost.mineral > rules.mineral:    return False
-        if                     cost.vespene > rules.vespene:    return False
-        if                    -cost.supply  > rules.supply:     return False
-        if motherShipPicked and unit.name == "Mothership":      return False # at most one mothership can be picked
+        if  cost.mineral > rules.mineral:    return False
+        if  cost.vespene > rules.vespene:    return False
+        if -cost.supply  > rules.supply:     return False
+        if ms and unit.name == "Mothership": return False # at most one mothership can be picked
         return True
     ############################################################################
     def confirmSelection(unit):
@@ -105,8 +105,6 @@ def pickRandomUnit(choices, rules, motherShipPicked=False):
             if isValidSelection(selection): # if selected unit fails criteria, pick a different unit
                 break
             choices.remove(selection) # this selection is an unsuccessful attempt
-            #attempts.add(selection)
-            #return pickRandomUnit(choices, rules, attempts)
         return confirmSelection(selection)
     else:
         raise NotImplementedError("TODO")
@@ -117,9 +115,9 @@ def setLocation(scenario, techUnit, location, mapData):
     """determine the (valid) location for techUnit to be placed, accounting """\
     """for all previously placed units"""
     if mapData:
-        pass
+        raise NotImplementedError("TODO -- assign each unit's map location")
     else:
-        raise NotImplementedError("TODO")
+        raise NotImplementedError("TODO -- assign each unit's map location")
 
 
 ################################################################################
