@@ -115,7 +115,7 @@ def setLocation(scenario, techUnit, location, mapData):
     """determine the (valid) location for techUnit to be placed, accounting """\
     """for all previously placed units"""
     if mapData:
-        raise NotImplementedError("TODO -- assign each unit's map location")
+        pass # TODO -- assign each unit's map location
     else:
         raise NotImplementedError("TODO -- assign each unit's map location")
 
