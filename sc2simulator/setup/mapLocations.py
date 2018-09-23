@@ -68,3 +68,13 @@ def pickBoundMapLoc(center, radius, dimensions, numAttempts=0):
         return pickBoundMapLoc(center, r, dimensions, numAttempts - 1) # another attempt is allowed
     return newLoc # return as map coordinates
 
+
+################################################################################
+def setLocation(scenario, techUnit, location, mapData):
+    """determine the (valid) location for techUnit to be placed, accounting """\
+    """for all previously placed units"""
+    if mapData: # closed source package
+        pass # TODO -- assign each unit's map location
+    else:
+        raise NotImplementedError("TODO -- assign each unit's map location")
+

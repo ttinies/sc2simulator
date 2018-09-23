@@ -15,6 +15,7 @@ except ModuleNotFoundError:
     techtree = None
 
 from sc2simulator import constants as c
+from sc2simulator.setup.mapLocations import setLocation
 
 
 ################################################################################
@@ -108,16 +109,6 @@ def pickRandomUnit(choices, rules, ms=False):
         return confirmSelection(selection)
     else:
         raise NotImplementedError("TODO")
-
-
-################################################################################
-def setLocation(scenario, techUnit, location, mapData):
-    """determine the (valid) location for techUnit to be placed, accounting """\
-    """for all previously placed units"""
-    if mapData:
-        pass # TODO -- assign each unit's map location
-    else:
-        raise NotImplementedError("TODO -- assign each unit's map location")
 
 
 ################################################################################
