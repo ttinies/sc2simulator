@@ -10,7 +10,7 @@ import random
 try:
     import sc2techTree # closed source package
     techtree = sc2techTree.getLastTree()
-except ModuleNotFoundError:
+except Exception: # ModuleNotFoundError isn't available in python 3.5
     techtree = None
 
 from sc2simulator import constants as c

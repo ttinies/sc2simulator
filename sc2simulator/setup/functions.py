@@ -42,7 +42,7 @@ def generateScenario(mapObj, options, cfg):
         import sc2maps # closed source package
         mData = sc2maps.MapData(mapName=mapObj.name)
         dim = mData.dimensions.toCoords()
-    except ModuleNotFoundError as e:
+    except Exception: # ModuleNotFoundError isn't available in python 3.5
         dim = convertStrToPoint(options.dimensions)
     scenario = Scenario("custom%s"%mapObj.name)
     scenario.duration = options.duration
