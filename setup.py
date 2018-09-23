@@ -24,6 +24,7 @@ VERSION = None
 REQUIRED = [
     "sc2common",
     "sc2gameLobby",
+    "sc2ladderMgmt",
     "sc2maptool",
     "sc2players",
 ]
