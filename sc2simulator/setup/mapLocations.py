@@ -87,7 +87,7 @@ def setLocation(otherUnits, techUnit, location, field):
         def progressiveSquares(pt, idx=1):
             """locate a point as close as possible to idx"""
             validLocs = []
-            uRad = techUnit.radius
+            uRad = techUnit.radius # assumed sc2techTree is available if sc2maps is as well
             cx, cy = pt
             minX = cx - idx # create bounding box outline
             maxX = cx + idx
