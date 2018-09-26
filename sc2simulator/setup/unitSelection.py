@@ -36,7 +36,7 @@ def generatePlayerUnits(scenario, playerID, race, rules, location, mapData=None)
         while newTag in scenario.units: # new unit cannot share a tag with a known unit
             newTag = random.randint(150, c.MAX_TAG)
         allUnits = scenario.units.values()
-        if techUnit.energyStart:
+        if techUnit.energyStart: # detected a caster
             energyMax = techUnit.energyMax
             if   rules.energy:      energyVal = min(rules.energy, energyMax)
             elif rules.energyMax:   energyVal = energyMax
