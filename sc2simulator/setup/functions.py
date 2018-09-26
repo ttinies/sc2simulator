@@ -37,10 +37,11 @@ def getSetup(mapObj, options, cfg):
 def generateScenario(mapObj, options, cfg):
     """override this function is different generation methods are desired"""
     dim = None
-    mData = None
+    hg = None
     try:
         import sc2maps # closed source package
         mData = sc2maps.MapData(mapName=mapObj.name)
+        hg = mData.placement.halfGrid
         dim = mData.dimensions.toCoords()
     except Exception: # ModuleNotFoundError isn't available in python 3.5
         dim = convertStrToPoint(options.dimensions)
@@ -52,7 +53,7 @@ def generateScenario(mapObj, options, cfg):
     givenRaces = [options.player1race, options.player2race]
     for i, (pLoc, r) in enumerate(zip(mapLocs, givenRaces)):
         race = pickRace(r)
-        generatePlayerUnits(scenario, i+1, race, options, pLoc, mapData=mData)
+        generatePlayerUnits(scenario, i+1, race, options, pLoc, mapData=hg)
     return []
 
 
