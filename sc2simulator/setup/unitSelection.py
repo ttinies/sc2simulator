@@ -29,7 +29,7 @@ def generatePlayerUnits(scenario, playerID, race, rules, location, mapData=None)
                 available.add(p)
         available = available
     else:
-        raise NotImplementedError("TODO")
+        raise NotImplementedError("TODO -- how to know what units are available without the techtree")
     newTag = random.randint(150, c.MAX_TAG) # preselected tag for first unit
     playerUnits = selectUnitList(available, rules, mapData)
     for techUnit in playerUnits:
