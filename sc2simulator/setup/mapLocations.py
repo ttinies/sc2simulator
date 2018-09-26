@@ -1,4 +1,5 @@
 
+import itertools
 import math
 import random
 
@@ -36,18 +37,25 @@ def convertStrToPoint(value, dim=None):
     
 
 ################################################################################
-def pickValidMapLoc(dimensions):
+def pickValidMapLoc(dimensions, pad=30):
     """determine any location which is placeable on the map"""
     x, y = dimensions[:2]
-    return (random.random() * x, random.random() * y, 0.0)
+    w = x - (pad * 2)
+    l = y - (pad * 2)
+    return (pad + random.random() * (w),
+            pad + random.random() * (l),
+            0.0)
 
 
 ################################################################################
-def isValidLoc(loc, dimensions):
+def isValidLoc(loc, dimensions, pad=30):
     """whether loc is valid given map's dimensions"""
     x, y, z = loc
     maxX, maxY, maxZ  = dimensions
-    return x >= 0 and x <= maxX and y >= 0 and y <= maxY
+    maxX -= pad
+    maxY -= pad
+    maxZ -= pad
+    return x >= pad and x <= maxX and y >= pad and y <= maxY
 
 
 ################################################################################
@@ -65,16 +73,52 @@ def pickBoundMapLoc(center, radius, dimensions, numAttempts=0):
         if numAttempts >= c.MAX_MAP_PICK_TRIES:
             raise Exception(("could not successfully pick a map location "\
              "after %d attempts given r=%s c=%s")%(numAttempts, r, str(center)))
-        return pickBoundMapLoc(center, r, dimensions, numAttempts - 1) # another attempt is allowed
+        else: numAttempts += 1
+        return pickBoundMapLoc(center, r, dimensions, numAttempts) # another attempt is allowed
     return newLoc # return as map coordinates
 
 
 ################################################################################
-def setLocation(scenario, techUnit, location, mapData):
+def setLocation(otherUnits, techUnit, location, field):
     """determine the (valid) location for techUnit to be placed, accounting """\
     """for all previously placed units"""
-    if mapData: # closed source package
-        pass # TODO -- assign each unit's map location
-    else:
+    if field: # object from closed source package
+        ########################################################################
+        def progressiveSquares(pt, idx=1):
+            """locate a point as close as possible to idx"""
+            validLocs = []
+            uRad = techUnit.radius
+            cx, cy = pt
+            minX = cx - idx # create bounding box outline
+            maxX = cx + idx
+            minY = cy - idx
+            maxY = cy + idx
+            for x in range(minX, maxX+1):
+                pt1 = (x, minY, 0) # bottom row
+                pt2 = (x, maxY, 0) # top row
+                if field.canSet(pt1, uRad, goodVal=1): validLocs.append(pt1)
+                if field.canSet(pt2, uRad, goodVal=1): validLocs.append(pt2)
+            for y in range(minY+1, maxY+2): # exclude bottom/top rows
+                pt1 = (minX, y, 0) # left side
+                pt2 = (maxX, y, 0) # right side
+                if field.canSet(pt1, uRad, goodVal=1): validLocs.append(pt1)
+                if field.canSet(pt2, uRad, goodVal=1): validLocs.append(pt2)
+            if validLocs: # found at least one valid location; pick one
+                  pick = random.choice(validLocs)
+                  newPt = [term / 2.0 for term in pick] # convert from 2x grid size field (for half points) back to normal grid coordinates
+                  field.setValues(pick[:2], radius=[uRad]*2, newVal=0,
+                      shape=c.cs.SQUARE) # don't overlap these coordinates anymore
+                  #field.display()
+                  return newPt
+            else: return progressiveSquares(pt, idx=idx+1) # consider next square
+        ########################################################################
+        if techUnit.isAir: # air units can stack on top of each other without issue
+            return location
+        halfPt = [2 * term for term in location] # account for half grid
+        halfLoc = c.cu.MapPoint(*halfPt)
+        halfLoc = c.cf.gridSnap(halfLoc) # align to even grid since the field has even indexes
+        return progressiveSquares((int(halfLoc.x), int(halfLoc.y)))
+    else: # similar; can't guarentee that the placement is valid without field
+        # TODO -- use otherUnits as the available locations
         raise NotImplementedError("TODO -- assign each unit's map location")
 
