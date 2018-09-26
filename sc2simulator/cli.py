@@ -18,6 +18,12 @@ from sc2simulator.__version__ import __version__
 from sc2simulator import constants as c
 from sc2simulator.setup import getSetup
 
+# TODO -- launch game, apply a predefined setup and play as a human
+# TODO -- perform coverage check by adding launch point in the code
+
+# TODO -- place units in map (without sc2maps)
+# TODO -- unit selection without sc2techTree
+# TODO -- launch game, apply a predefined setup and play as a ai/bot
 
 ################################################################################
 def optionsParser(passedParser=None):
@@ -47,10 +53,9 @@ def optionsParser(passedParser=None):
                                                                           help="the race player 2 will play (default: random)")
     newGenOptns.add_argument("--player1loc"     , default=""            , help="where player 1's army will be clustered", metavar="X,Y")
     newGenOptns.add_argument("--player2loc"     , default=""            , help="where player 2's army will be clustered", metavar="X,Y")
-    newGenOptns.add_argument("--distance"       , default=20,   type=int, help="the distance between each player's army (if both player's army locations aren't specified)", metavar="NUMBER")
+    newGenOptns.add_argument("--distance"       , default=13,   type=int, help="the distance between each player's army (if both player's army locations aren't specified)", metavar="NUMBER")
     newGenOptns.add_argument("--unitsMin"       , default=1,    type=int, help="the minimum number of units each player shall control")
     newGenOptns.add_argument("--unitsMax"       , default=10,   type=int, help="the maximum number of units each player shall control")
-   #newGenOptns.add_argument("--upgrades"       , default=""            , help="")
     sc2mapsOpts = parser.add_argument_group('Dynamic composition options WITHOUT sc2maps package')
     sc2mapsOpts.add_argument("--dimensions"     , default="150,150"     , help="provide maximum map dimensions", metavar="X,Y")
     techTreeOpt = parser.add_argument_group('Dynamic composition options with sc2techTree package')
@@ -59,6 +64,10 @@ def optionsParser(passedParser=None):
     techTreeOpt.add_argument("--supply"         , default=99999,type=int, help="the maximum supply each army composition will consume", metavar="INT")
     techTreeOpt.add_argument("--maxdps"         , default=99999,type=int, help="the target amount of total dps (damage per second) of each army composition", metavar="NUMBER")
     techTreeOpt.add_argument("--maxhp"          , default=99999,type=int, help="the target amount of total hp (hit points) of each army composition", metavar="NUMBER")
+    newGenOptns.add_argument("--energy"         , default=0,    type=int, help="each caster will have this energy or their max, whichever is lower")
+    newGenOptns.add_argument("--energyMax"      , action="store_true"   , help="all casters have maximum energy")
+    newGenOptns.add_argument("--energyRand"     , action="store_true"   , help="all casters have a random amount of energy between 0 and their maximum")
+   #newGenOptns.add_argument("--upgrades"       , default=""            , help="")
     techTreeOpt.add_argument("--allowDefense"   , action="store_true"   , help="whether defensive buildings ")
     techTreeOpt.add_argument("--air"            , action="store_true"   , help="all generated units must be air units")
     techTreeOpt.add_argument("--ground"         , action="store_true"   , help="all generated units must be non-air units")
