@@ -21,7 +21,7 @@ from sc2simulator.setup.mapLocations import setLocation
 def generatePlayerUnits(scenario, playerID, race, rules, location, mapData=None):
     available = set()
     if techtree: # acquire unit definitions
-        ignoredTypes = {12, 31, 58, 85, 113, 128, 151, 501, 502, 687, 892}
+        ignoredTypes = {12, 31, 58, 85, 113, 128, 151, 501, 687, 892}
         for u in techtree._leaves[race].values():
             for p in u.produces:
                 if any([ignoreType == p.mType for ignoreType in ignoredTypes]):
@@ -35,11 +35,19 @@ def generatePlayerUnits(scenario, playerID, race, rules, location, mapData=None)
     for techUnit in playerUnits:
         while newTag in scenario.units: # new unit cannot share a tag with a known unit
             newTag = random.randint(150, c.MAX_TAG)
-        scenario.updateUnit(newTag, # add units to scenario
+        allUnits = scenario.units.values()
+        if techUnit.energyStart:
+            energyMax = techUnit.energyMax
+            if   rules.energy:      energyVal = min(rules.energy, energyMax)
+            elif rules.energyMax:   energyVal = energyMax
+            elif rules.energyRand:  energyVal = random.randint(0, energyMax)
+            else:                   energyVal = techUnit.energyStart
+        else:                       energyVal = 0
+        newUnit = scenario.updateUnit(newTag, # add units to scenario
             nametype = techUnit.name,
             owner    = playerID,
-            position = setLocation(scenario, techUnit, location, mapData),
-            energy   = techUnit.energyStart,
+            position = setLocation(allUnits, techUnit, location, mapData),
+            energy   = energyVal,
             life     = techUnit.healthMax,
             shields  = techUnit.shieldsMax)
 
