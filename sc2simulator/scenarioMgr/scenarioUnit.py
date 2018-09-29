@@ -10,6 +10,7 @@ class ScenarioUnit(object):
         self.position   = None
         self.facing     = 0.0
         self.nametype   = ""
+        self.code       = 0
         self.energy     = 0.0
         self.life       = 0.0
         self.shields    = 0.0
@@ -28,8 +29,10 @@ class ScenarioUnit(object):
     @property
     def loc(self):
         """MapPoint object where this unit is located"""
+        return self.position
     ############################################################################
     @property
     def unitType(self):
         """the tech tree definition for this specific unit"""
+        return self.code
 
