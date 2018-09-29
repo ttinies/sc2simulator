@@ -5,25 +5,30 @@ PURPOSE: train a player using test scenarios.
 
 import argparse
 import os
+import re
 import sys
 import time
 
+from sc2ladderMgmt import getLadder
 from sc2maptool import selectMap
 from sc2maptool.cli import getSelectionParams
 from sc2maptool.cli import optionsParser as addMapOptions
+from sc2gameLobby import launcher
 from sc2gameLobby.gameConfig import Config
-from sc2gameLobby.scenarioEditor import launchEditor
+from sc2gameLobby.setScenario import launchEditor
+from sc2gameLobby.versions import Version
+from sc2players import getPlayer, PlayerPreGame
 
 from sc2simulator.__version__ import __version__
 from sc2simulator import constants as c
 from sc2simulator.setup import getSetup
 
-# TODO -- launch game, apply a predefined setup and play as a human
 # TODO -- perform coverage check by adding launch point in the code
 
 # TODO -- place units in map (without sc2maps)
 # TODO -- unit selection without sc2techTree
 # TODO -- launch game, apply a predefined setup and play as a ai/bot
+# TODO -- figure out why set unit health, shields and energy isn't working
 
 ################################################################################
 def optionsParser(passedParser=None):
@@ -42,18 +47,20 @@ def optionsParser(passedParser=None):
     simControlO = parser.add_argument_group('Gameplay control options')
     simControlO.add_argument("--loops"          , default=1,    type=int, help="the number of learning iterations performed per test.", metavar="INT")
     simControlO.add_argument("--players"        , default=""            , help="the ladder player name(s) to control a player (comma separated).", metavar="NAMES")
+    simControlO.add_argument("--replaydir"      , default=c.PATH_NEW_MATCH_DATA,
+                                                                          help="the path where generated replays will be stored.")
     addMapOptions(parser) # ensure map selection options are also added
     predefOptns = parser.add_argument_group('Predefined Scenario options (from the editor)')
     predefOptns.add_argument("--cases"          , default=""            , help="the specific sc2 bank setup names (comma separated)", metavar="NAMES")
     newGenOptns = parser.add_argument_group('Dynamically generated composition options')
     newGenOptns.add_argument("--duration"       , default=c.DEF_DURATION, help="how long this generated scenario should last")
-    newGenOptns.add_argument("--player1race"    , default=c.RANDOM, choices=c.types.SelectRaces.ALLOWED_TYPES,
-                                                                          help="the race player 1 will play (default: random)")
-    newGenOptns.add_argument("--player2race"    , default=c.RANDOM, choices=c.types.SelectRaces.ALLOWED_TYPES,
-                                                                          help="the race player 2 will play (default: random)")
-    newGenOptns.add_argument("--player1loc"     , default=""            , help="where player 1's army will be clustered", metavar="X,Y")
-    newGenOptns.add_argument("--player2loc"     , default=""            , help="where player 2's army will be clustered", metavar="X,Y")
-    newGenOptns.add_argument("--distance"       , default=13,   type=int, help="the distance between each player's army (if both player's army locations aren't specified)", metavar="NUMBER")
+    newGenOptns.add_argument("--race"           , default=c.RANDOM, choices=c.types.SelectRaces.ALLOWED_TYPES,
+                                                                          help="the race this agent will play (default: random)")
+    newGenOptns.add_argument("--enemyrace"      , default=c.RANDOM, choices=c.types.SelectRaces.ALLOWED_TYPES,
+                                                                          help="the race your enemy's units will spawn as (default: random)")
+    newGenOptns.add_argument("--loc"            , default=""            , help="where this agent's army will be clustered", metavar="X,Y")
+    newGenOptns.add_argument("--enemyloc"       , default=""            , help="where the enemy's army will be clustered", metavar="X,Y")
+    newGenOptns.add_argument("--distance"       , default=18,   type=int, help="the distance between each player's army (if both player's army locations aren't specified)", metavar="NUMBER")
     newGenOptns.add_argument("--unitsMin"       , default=1,    type=int, help="the minimum number of units each player shall control")
     newGenOptns.add_argument("--unitsMax"       , default=10,   type=int, help="the maximum number of units each player shall control")
     sc2mapsOpts = parser.add_argument_group('Dynamic composition options WITHOUT sc2maps package')
@@ -77,6 +84,20 @@ def optionsParser(passedParser=None):
 
 
 ################################################################################
+def defineLaunchOptions(scenario, replayOut):
+    """create a configuration that is compatible with the game launcher"""
+    class Dummy(): pass
+    ret = Dummy()
+    ret.search      = False
+    ret.history     = False
+    ret.nogui       = True
+    ret.nofog       = True
+    ret.scenario    = scenario
+    ret.savereplay  = replayOut
+    return ret
+
+
+################################################################################
 def main(options=None):
     if options == None: # if not provided, assume options are provided via command line
         options = optionsParser().parse_args()
@@ -87,25 +108,50 @@ def main(options=None):
         closestMatch=True, # force selection of at most one map
         **getSelectionParams(options))
     outTempName = specifiedMap.name + "_%d_%d." + c.SC2_REPLAY_EXT
-    outTemplate = os.path.join(c.PATH_NEW_MATCH_DATA, outTempName)
+    outTemplate = os.path.join(options.replaydir, outTempName)
     if options.editor:
         launchEditor(specifiedMap) # run the editor using the game modification
     elif options.regression:
         batteries = options.test.split(",")
-        # TODO -- run each test battery
+        raise NotImplementedError("TODO -- run each test battery")
     elif options.custom:
-        cfg = Config(themap=specifiedMap)
+        playerNames = re.split("[,\s]+", options.players)
+        if len(playerNames) != 2: # must specify two players for 1v1
+            if not options.players:
+                playerNames = ""
+            raise ValueError("must specify two players, but given %d: '%s'"%(
+                len(playerNames), playerNames))
+        try: thisPlayer = getPlayer(playerNames[0]) # player name stated first is expected to be this player
+        except Exception:
+            print("ERROR: player '%s' is not known"%playerNames[0])
+            return
+        if options.race == c.RANDOM:    options.race = thisPlayer.raceDefault # defer to a player's specified default race
+        cfg = Config(themap=specifiedMap,
+                     ladder=getLadder("versentiedge"),
+                     players=[PlayerPreGame(thisPlayer,
+                              selectedRace=c.types.SelectRaces(options.race))],
+                     mode=c.types.GameModes(c.MODE_1V1),
+                     opponents=playerNames[1:],
+                     whichPlayer=thisPlayer.name,
+                     version=Version(), # always using the latest version
+                     fogDisabled=True, # disable fog to be able to see, set and remove enemy units
+                     **thisPlayer.initOptions, # ensure desired data is sent in callback
+             )
+        cfg.raw = True # required to be able to set up units using debug commands
+        #cfg.display()
         scenarios = getSetup(specifiedMap, options, cfg)
         for scenario in scenarios:
-            epoch = int(time.time())
+            epoch = int(time.time()) # used for replay differentiation between each scenario
             # TODO -- load scenario specific
-            cfg.scenario = scenario # each scenario needs to set up its own designated units
-            for curLoop in range(options.loops): # each loop of each scenario gets its own unique replay
-                cfg.replay = outTemplate%(epoch, curLoop)
-                print("outFile:", outFile)
-                launcher.run(cfg)
+            failure = False
+            for curLoop in range(1, options.loops+1): # each loop of each scenario gets its own unique replay (count starting at one)
+                outFile = outTemplate%(epoch, curLoop)
+                launchOpts = defineLaunchOptions(scenario, outFile)
+                failure = launcher.run(launchOpts, cfg=cfg)
+                if failure: break
+            if failure: break
     elif options.join:
-        pass # TODO -- implement
+        raise NotImplementedError("TODO -- implement remote play")
     else:
         print("ERROR: must select a main option.  See --help.")
 
