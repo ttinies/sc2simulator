@@ -45,6 +45,7 @@ def generatePlayerUnits(scenario, playerID, race, rules, location, mapData=None)
         else:                       energyVal = 0
         newUnit = scenario.updateUnit(newTag, # add units to scenario
             nametype = techUnit.name,
+            code     = techUnit.mType.code,
             owner    = playerID,
             position = setLocation(allUnits, techUnit, location, mapData),
             energy   = energyVal,
