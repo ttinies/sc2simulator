@@ -23,12 +23,6 @@ from sc2simulator.__version__ import __version__
 from sc2simulator import constants as c
 from sc2simulator.setup import getSetup
 
-# TODO -- perform coverage check by adding launch point in the code
-
-# TODO -- place units in map (without sc2maps)
-# TODO -- unit selection without sc2techTree
-# TODO -- launch game, apply a predefined setup and play as a ai/bot
-# TODO -- figure out why set unit health, shields and energy isn't working
 
 ################################################################################
 def optionsParser(passedParser=None):
