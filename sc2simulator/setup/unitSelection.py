@@ -28,29 +28,29 @@ def generatePlayerUnits(scenario, playerID, race, rules, location, mapData=None)
                     continue
                 available.add(p)
         available = available
+        newTag = random.randint(150, c.MAX_TAG) # preselected tag for first unit
+        playerUnits = selectUnitList(available, rules, mapData)
+        for techUnit in playerUnits:
+            while newTag in scenario.units: # new unit cannot share a tag with a known unit
+                newTag = random.randint(150, c.MAX_TAG)
+            allUnits = scenario.units.values()
+            if techUnit.energyStart: # detected a caster
+                energyMax = techUnit.energyMax
+                if   rules.energy:      energyVal = min(rules.energy, energyMax)
+                elif rules.energyMax:   energyVal = energyMax
+                elif rules.energyRand:  energyVal = random.randint(0, energyMax)
+                else:                   energyVal = techUnit.energyStart
+            else:                       energyVal = 0
+            newUnit = scenario.updateUnit(newTag, # add units to scenario
+                nametype = techUnit.name,
+                code     = techUnit.mType.code,
+                owner    = playerID,
+                position = setLocation(allUnits, techUnit, location, mapData),
+                energy   = energyVal,
+                life     = techUnit.healthMax,
+                shields  = techUnit.shieldsMax)
     else:
         raise NotImplementedError("TODO -- how to know what units are available without the techtree")
-    newTag = random.randint(150, c.MAX_TAG) # preselected tag for first unit
-    playerUnits = selectUnitList(available, rules, mapData)
-    for techUnit in playerUnits:
-        while newTag in scenario.units: # new unit cannot share a tag with a known unit
-            newTag = random.randint(150, c.MAX_TAG)
-        allUnits = scenario.units.values()
-        if techUnit.energyStart: # detected a caster
-            energyMax = techUnit.energyMax
-            if   rules.energy:      energyVal = min(rules.energy, energyMax)
-            elif rules.energyMax:   energyVal = energyMax
-            elif rules.energyRand:  energyVal = random.randint(0, energyMax)
-            else:                   energyVal = techUnit.energyStart
-        else:                       energyVal = 0
-        newUnit = scenario.updateUnit(newTag, # add units to scenario
-            nametype = techUnit.name,
-            code     = techUnit.mType.code,
-            owner    = playerID,
-            position = setLocation(allUnits, techUnit, location, mapData),
-            energy   = energyVal,
-            life     = techUnit.healthMax,
-            shields  = techUnit.shieldsMax)
 
 
 ################################################################################
