@@ -49,12 +49,12 @@ def generateScenario(mapObj, options, cfg):
     scenario.duration = options.duration
     #options.players # TODO -- add players to cfg ??
     d = options.distance # generate each player's locations
-    mapLocs = defineLocs(options.player1loc, options.player2loc, d, dim)
-    givenRaces = [options.player1race, options.player2race]
+    mapLocs = defineLocs(options.loc, options.enemyloc, d, dim)
+    givenRaces = [options.race, options.enemyrace]
     for i, (pLoc, r) in enumerate(zip(mapLocs, givenRaces)):
         race = pickRace(r)
         generatePlayerUnits(scenario, i+1, race, options, pLoc, mapData=hg)
-    return []
+    return [scenario]
 
 
 ################################################################################
