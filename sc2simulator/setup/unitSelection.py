@@ -6,9 +6,10 @@ player are random unless specifically declared.
 """
 
 import random
+import re
 
 try:
-    import sc2techTree # closed source package
+    import sc2techTree # Versentiedge closed source package
     techtree = sc2techTree.getLastTree()
 except Exception: # ModuleNotFoundError isn't available in python 3.5
     techtree = None
@@ -18,7 +19,9 @@ from sc2simulator.setup.mapLocations import setLocation
 
 
 ################################################################################
-def generatePlayerUnits(scenario, playerID, race, rules, location, mapData=None):
+def generatePlayerUnits(scenario, playerID, race, rules, location, mapData):
+    if isinstance(mapData, tuple):  shape =  mapData[:2] # only use x,y
+    else:                           shape = (mapData.maxX, mapData.maxY)
     available = set()
     if techtree: # acquire unit definitions
         ignoredTypes = {12, 31, 58, 85, 113, 128, 151, 501, 687, 892}
@@ -28,11 +31,8 @@ def generatePlayerUnits(scenario, playerID, race, rules, location, mapData=None)
                     continue
                 available.add(p)
         available = available
-        newTag = random.randint(150, c.MAX_TAG) # preselected tag for first unit
         playerUnits = selectUnitList(available, rules, mapData)
         for techUnit in playerUnits:
-            while newTag in scenario.units: # new unit cannot share a tag with a known unit
-                newTag = random.randint(150, c.MAX_TAG)
             allUnits = scenario.units.values()
             if techUnit.energyStart: # detected a caster
                 energyMax = techUnit.energyMax
@@ -41,14 +41,8 @@ def generatePlayerUnits(scenario, playerID, race, rules, location, mapData=None)
                 elif rules.energyRand:  energyVal = random.randint(0, energyMax)
                 else:                   energyVal = techUnit.energyStart
             else:                       energyVal = 0
-            newUnit = scenario.updateUnit(newTag, # add units to scenario
-                nametype = techUnit.name,
-                code     = techUnit.mType.code,
-                owner    = playerID,
-                position = setLocation(allUnits, techUnit, location, mapData),
-                energy   = energyVal,
-                life     = techUnit.healthMax,
-                shields  = techUnit.shieldsMax)
+            newUnit = scenario.updateUnit(techUnit=techUnit, owner=playerID,
+                                          position=location, energy=energyVal)
     else:
         raise NotImplementedError("TODO -- how to know what units are available without the techtree")
 
@@ -73,7 +67,6 @@ def selectUnitList(available, rules, mapData, numFails=0):
         else: # picked a unit successfully; attempt to pick more!
             if u.name == "Mothership": motherShipPicked = True # ensure that at most only one mothership can be picked
             units.append( u )
-            #print("%02d.  %s"%(len(units), u))
     return units
 
 
@@ -136,4 +129,27 @@ def copyRules(originals):
     ret.unitsMin        = originals.unitsMin
     ret.unitsMax        = originals.unitsMax
     return ret
+
+
+################################################################################
+def generateUpgrades(scenario, playerID, options):
+    """identify the upgrades corresponding to the specified options"""
+    if playerID == 1:   upgradeStr = options.upgrades
+    else:               upgradeStr = options.enemyUpgrades
+    if not upgradeStr: return # upgrades weren't specified for this player
+    if not techtree:
+        raise ValueError(("cannot determine upgrades without the sc2techTree "\
+            " (given: %s)")%(upgradeStr))
+    for techPart in re.split("[,:;]+", upgradeStr):
+        try:
+            techKey = int(techPart)
+            tech = sc2techTree.getUpgradeByID(techKey)[0]
+        except ValueError: # not an integer -- assume an exact match key string
+            techKey = techPart
+            try:  tech = sc2techTree.getUpgrade(techKey)
+            except KeyError:
+                raise KeyError("could not identify upgrade: '%s'"%(techKey))
+        except IndexError:
+            raise IndexError("could not identify upgrade ID: '%s'"%(techKey))
+        scenario.addUpgrade(playerID, tech)
 
