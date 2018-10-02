@@ -1,6 +1,6 @@
 
 """
-PURPOSE: train a player using test scenarios.
+PURPOSE: simulate a 1v1 scenario to test player actions.
 """
 
 import argparse
@@ -65,13 +65,14 @@ def optionsParser(passedParser=None):
     techTreeOpt.add_argument("--supply"         , default=99999,type=int, help="the maximum supply each army composition will consume", metavar="INT")
     techTreeOpt.add_argument("--maxdps"         , default=99999,type=int, help="the target amount of total dps (damage per second) of each army composition", metavar="NUMBER")
     techTreeOpt.add_argument("--maxhp"          , default=99999,type=int, help="the target amount of total hp (hit points) of each army composition", metavar="NUMBER")
-    newGenOptns.add_argument("--energy"         , default=0,    type=int, help="each caster will have this energy or their max, whichever is lower")
-    newGenOptns.add_argument("--energyMax"      , action="store_true"   , help="all casters have maximum energy")
-    newGenOptns.add_argument("--energyRand"     , action="store_true"   , help="all casters have a random amount of energy between 0 and their maximum")
-   #newGenOptns.add_argument("--upgrades"       , default=""            , help="")
+    techTreeOpt.add_argument("--energy"         , default=0,    type=int, help="each caster will have this energy or their max, whichever is lower")
+    techTreeOpt.add_argument("--energyMax"      , action="store_true"   , help="all casters have maximum energy")
+    techTreeOpt.add_argument("--energyRand"     , action="store_true"   , help="all casters have a random amount of energy between 0 and their maximum")
     techTreeOpt.add_argument("--allowDefense"   , action="store_true"   , help="whether defensive buildings ")
     techTreeOpt.add_argument("--air"            , action="store_true"   , help="all generated units must be air units")
     techTreeOpt.add_argument("--ground"         , action="store_true"   , help="all generated units must be non-air units")
+    techTreeOpt.add_argument("--upgrades"       , default=""            , help="the names or IDs that your agent will start with", metavar="IDs")
+    techTreeOpt.add_argument("--enemyUpgrades"  , default=""            , help="the names or IDs that your opponent will start with", metavar="IDs")
     #trainContrl = parser.add_argument_group('Training control options')
     #trainContrl.add_argument("--learn"          , action="store_true"   , help="perform learning after each iteration.")
     return parser
@@ -94,7 +95,8 @@ def defineLaunchOptions(scenario, replayOut):
 ################################################################################
 def main(options=None):
     if options == None: # if not provided, assume options are provided via command line
-        options = optionsParser().parse_args()
+        parser = optionsParser()
+        options = parser.parse_args()
         sys.argv = sys.argv[:1] # remove all arguments to avoid problems with absl FLAGS :(
     specifiedMap = selectMap(
         options.mapname,
@@ -147,5 +149,6 @@ def main(options=None):
     elif options.join:
         raise NotImplementedError("TODO -- implement remote play")
     else:
-        print("ERROR: must select a main option.  See --help.")
+        parser.print_help()
+        print("ERROR: must select a main option.")
 
