@@ -7,15 +7,17 @@ import random
 
 from sc2simulator import constants as c
 from sc2simulator.scenarioMgr import Scenario, parseBankXml, getBankPath
+from sc2simulator.setup import mapLocations
 from sc2simulator.setup.mapLocations import convertStrToPoint, defineLocs
+from sc2simulator.setup.unitSelection import generateUpgrades
 from sc2simulator.setup.unitSelection import generatePlayerUnits
 
 
 ################################################################################
 def getSetup(mapObj, options, cfg):
     """get the appropriate scenarios, whether predefined or custom generated"""
+    scenarios = []
     if options.cases: # use preloaded cases
-        scenarios = []
         try:
             bankName = getBankPath(mapObj.name) # select the bank repository from the specified map
             bank = parseBankXml(bankName) # load the bank's defined scenarios
@@ -28,32 +30,53 @@ def getSetup(mapObj, options, cfg):
             except:
                 print("WARNING: scenario '%s' was not found in bank %s"%(
                     scenarioName, bankName))
-        return scenarios
     else: # dynamically generate the scenario
-        return generateScenario(mapObj, options, cfg)
+        scenarios += generateScenario(mapObj, options, cfg)
+    return scenarios
 
 
 ################################################################################
 def generateScenario(mapObj, options, cfg):
     """override this function is different generation methods are desired"""
-    dim = None
     hg = None
     try:
-        import sc2maps # closed source package
+        import sc2maps # Versentiedge closed source package
         mData = sc2maps.MapData(mapName=mapObj.name)
+        mapLocations.mapDimensions = mData.dimensions.toCoords()
         hg = mData.placement.halfGrid
-        dim = mData.dimensions.toCoords()
     except Exception: # ModuleNotFoundError isn't available in python 3.5
-        dim = convertStrToPoint(options.dimensions)
+        try:
+            if not options.dimensions:  raise ValueError("must provide dims")
+            mapLocations.mapDimensions = convertStrToPoint(options.dimensions)
+            if len(mapLocations.mapDimensions) < 2:
+                raise ValueError("must provide valid dimensions (given: %s)"%(
+                    mapLocations.mapDimensions))
+        except ValueError:
+            print("ERROR: must provide valid map dimensions (given: %s"%(
+                options.dimensions))
+            return []
+        hg = mapLocations.mapDimensions
     scenario = Scenario("custom%s"%mapObj.name)
     scenario.duration = options.duration
-    #options.players # TODO -- add players to cfg ??
     d = options.distance # generate each player's locations
-    mapLocs = defineLocs(options.loc, options.enemyloc, d, dim)
+    mapLocs = defineLocs(options.loc, options.enemyloc, d)
     givenRaces = [options.race, options.enemyrace]
     for i, (pLoc, r) in enumerate(zip(mapLocs, givenRaces)):
         race = pickRace(r)
-        generatePlayerUnits(scenario, i+1, race, options, pLoc, mapData=hg)
+        pIdx = i + 1 # player indexes start at one, not zero
+        scenario.addPlayer(pIdx, loc=pLoc, race=race)
+        generatePlayerUnits(scenario, pIdx, race, options, pLoc, mapData=hg)
+        try:    generateUpgrades(scenario, pIdx, options)
+        except Exception as e:
+            print("ERROR: %s"%e)
+            return []
+        #scenario.players[pIdx].upgradeReqs
+        #for u in scenario.newBaseUnits(pIdx):
+        #    print("%d  %s"%(pIdx, u))
+        #print()
+        #for u in scenario.players[pIdx].baseUnits:
+        #    print("%d  %s"%(pIdx, u))
+        #print()
     return [scenario]
 
 
