@@ -96,12 +96,7 @@ def parseBankXml(xmlpath, debug=False):
         for sName, scenario in retBank.scenarios.items():
             print(scenario)
             for p in scenario.players.values():
-                print("  %s"%p)
-                print("    units")
-                for u in p.units:
-                    print("        %s"%u)
-                for u in p.upgrades:
-                    print("        %s"%u)
+                p.display()
             print("*"*80)
     return retBank
 
