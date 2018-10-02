@@ -5,19 +5,23 @@ import random
 
 from sc2simulator import constants as c
 
+mapDimensions = None
+
 
 ################################################################################
-def defineLocs(locP1, locP2, d, dim):
+def defineLocs(locP1, locP2, d):
     """ensure both player locations are defined as map location tuples"""
+    global mapDimensions
+    dim = mapDimensions
     if not any([locP1, locP2]): # neither location is defined
-        locP1 = pickValidMapLoc(dim)
-        locP2 = pickBoundMapLoc(locP1, d, dim)
+        locP1 = pickValidMapLoc()
+        locP2 = pickBoundMapLoc(locP1, d)
     elif locP1:
         locP1 = convertStrToPoint(locP1, dim)
-        locP2 = pickBoundMapLoc(locP1, d, dim)
-    elif options.player2.loc:
+        locP2 = pickBoundMapLoc(locP1, d)
+    elif locP2:
         locP2 = convertStrToPoint(locP2, dim)
-        locP1 = pickBoundMapLoc(locP2, d, dim)
+        locP1 = pickBoundMapLoc(locP2, d)
     else: # both player locs are defined already
         locP1 = convertStrToPoint(locP1, dim)
         locP2 = convertStrToPoint(locP2, dim)
@@ -37,9 +41,10 @@ def convertStrToPoint(value, dim=None):
     
 
 ################################################################################
-def pickValidMapLoc(dimensions, pad=30):
+def pickValidMapLoc(pad=30):
     """determine any location which is placeable on the map"""
-    x, y = dimensions[:2]
+    global mapDimensions
+    x, y = mapDimensions[:2]
     w = x - (pad * 2)
     l = y - (pad * 2)
     return (pad + random.random() * (w),
@@ -59,22 +64,23 @@ def isValidLoc(loc, dimensions, pad=30):
 
 
 ################################################################################
-def pickBoundMapLoc(center, radius, dimensions, numAttempts=0):
+def pickBoundMapLoc(center, radius, numAttempts=0):
     """pick a specific point 'radius' distance away from center, so long as """\
     """the point remains within the map's allowed dimensions"""
-    maxX, maxY, dummy = dimensions
+    global mapDimensions
+    maxX, maxY, dummy = mapDimensions
     angle = 2 * math.pi * random.random() # determine the position on the circle 
     r = radius
     circleX, circleY, dummy = center
     x = r * math.cos(angle) + circleX # calculate coordinates
     y = r * math.sin(angle) + circleY
     newLoc = (x, y, 0.0)
-    if not isValidLoc(newLoc, dimensions):
+    if not isValidLoc(newLoc, mapDimensions):
         if numAttempts >= c.MAX_MAP_PICK_TRIES:
             raise Exception(("could not successfully pick a map location "\
              "after %d attempts given r=%s c=%s")%(numAttempts, r, str(center)))
         else: numAttempts += 1
-        return pickBoundMapLoc(center, r, dimensions, numAttempts) # another attempt is allowed
+        return pickBoundMapLoc(center, r, numAttempts) # another attempt is allowed
     return newLoc # return as map coordinates
 
 
@@ -82,7 +88,7 @@ def pickBoundMapLoc(center, radius, dimensions, numAttempts=0):
 def setLocation(otherUnits, techUnit, location, field):
     """determine the (valid) location for techUnit to be placed, accounting """\
     """for all previously placed units"""
-    if field: # object from closed source package
+    if field: # object from Versentiedge closed source package
         ########################################################################
         def progressiveSquares(pt, idx=1):
             """locate a point as close as possible to idx"""
@@ -121,4 +127,34 @@ def setLocation(otherUnits, techUnit, location, field):
     else: # similar; can't guarentee that the placement is valid without field
         # TODO -- use otherUnits as the available locations
         raise NotImplementedError("TODO -- assign each unit's map location")
+
+
+################################################################################
+def pickCloserLoc(location, length):
+    """picks a location 'length' distance toward the center from 'location'"""
+    global mapDimensions
+    dims = mapDimensions[:2]
+    x, y = location[:2]
+    if length == 0: # no need to calculate delta from location
+        return (x, y)
+    xMid, yMid = [i / 2.0 for i in dims]
+    theta = math.atan2(yMid - y, xMid - x)
+    newX = x + math.cos(theta) * length
+    newY = y + math.sin(theta) * length
+    return (newX, newY)
+
+
+################################################################################
+def pickFurtherLoc(location, length):
+    """picks a location 'length' distance toward the center from 'location'"""
+    global mapDimensions
+    dims = mapDimensions[:2]
+    x, y = location[:2]
+    if length == 0: # no need to calculate delta from location
+        return (x, y)
+    xMid, yMid = [i / 2.0 for i in dims]
+    theta = math.atan2(yMid - y, xMid - x)
+    newX = x - math.cos(theta) * length
+    newY = y - math.sin(theta) * length
+    return (newX, newY)
 
