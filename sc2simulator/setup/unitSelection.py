@@ -20,8 +20,6 @@ from sc2simulator.setup.mapLocations import setLocation
 
 ################################################################################
 def generatePlayerUnits(scenario, playerID, race, rules, location, mapData):
-    if isinstance(mapData, tuple):  shape =  mapData[:2] # only use x,y
-    else:                           shape = (mapData.maxX, mapData.maxY)
     available = set()
     if techtree: # acquire unit definitions
         ignoredTypes = {12, 31, 58, 85, 113, 128, 151, 501, 687, 892}
