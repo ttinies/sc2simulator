@@ -3,4 +3,71 @@
 [![Coverage Status](https://coveralls.io/repos/github/ttinies/sc2simulator/badge.svg?branch=master)](https://coveralls.io/github/ttinies/sc2simulator?branch=master)
 ![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg)
 
-TO DO
+# [Starcraft 2 Scenario Simulator](https://github.com/ttinies/sc2simulator)
+
+## About
+
+This package's purpose to enable an interface for multiple players with various
+Starcraft 2 agents to play a variety of pre-built or generated scenarios.  The
+uses of this package are diverse, including AI aganet training.
+
+#### Status
+
+**This package is under active development.**  Reference the defined [issues](https://github.com/ttinies/sc2simulator/issues)
+to get a better idea of what is and is not working.  If something is discovered
+to not be working, kindly do submit a new issue!
+
+#### Rationale: Why Create this Repository?
+
+While a variety of situations can be encountered over the course of many, many
+melee games, there are several problems with this approach.  Specific situations
+occur infrequently, possibly once in the course of a match (which normally
+elapses ~20 minutes, up to over an hour at realtime speed) and may not occur
+even once in many hundreds of matches.  This makes training
+
+By allowing situations to be created artificially, the user may test their
+agent's functionality against it.  A specific battery of tests can be created
+to compare performance of implementations against each other.  It also allows
+for a specific type of situation to be created and tested quickly with slight
+variations to enhance the player's learing speed.
+
+## Functionality
+
+#### Brief Overview
+
+1. The simulator is invoked with specific options.
+
+    * *The scenario mini-editor:* if the editor is invoked using --editor, a
+    mini-editor appears to create or modify a scenario for play.  Unless the
+    option is selected to also play the specified scenario, the editor closes.
+
+    * *Regression testing:* when specifying --regression, a predefined battery of
+    test scenarios is run using same functionality as custom games except scenario
+    selection criteria are ignored in favor of each predefined scenario setup.
+    
+    * *Custom Scenarios:* The --custom option allows a player to set up a specific
+    scenario to test, including the opponent's setup.  Each agent joins an existing
+    scenario by using the --join option.
+    
+    * *Join:* The --join option allows a player to specify at most its own agent and
+    optionally its required opponent.  All other parameters of the scenario are
+    determined by the scenario creator.
+
+2. Each player connects to the game automatically via the sc2gameLobby package.
+   This occurs by default over Versentiedge's public matchmaking ladder server.
+3. Once in-game, the scenario is setup.
+
+    * if upgrades are specified, each player's client controller creates the
+    tech producing units and (with cheats enabled) automatically researches
+    the scenario-specified upgrades.  This will elapse at most an additional
+    21 seconds on top of the specified scenario duration.  (This is required
+    due to behavior in Blizzard's API protocol.)
+
+    * The host removes existing units and then creates the units as specified
+    by the scenario.
+
+4. gameplay continues for as long as is specified using the --duration option.
+5. the scenario can be repeated multiple times as specified using the --loops
+   option.  Steps 2-4 are repeated for each loop of the same scenario.
+6. A replay is saved locally by each player for each scenario iteration.
+
