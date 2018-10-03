@@ -75,17 +75,17 @@ class Scenario(object):
         x0, y0 = location[:2]
         if player.race == c.ZERG:
             off = 2 # zergOffset for creep tumors
-            newUnit = self.updateUnit(tag=0, base=True, # add units to scenario
+            for i in range(0,2):
+                newUnit = self.updateUnit(tag=0, base=True, # add units to scenario
                     nametype = "NydusNetwork",
                     code     = 95,
                     owner    = playerID,
-                    position = location, # the game handles attempting to place multiple units on top of each other
+                    position = pickCloserLoc(location, 5*i), # the game handles attempting to place multiple units on top of each other
                     energy   = 0,
                     life     = 850,
                     shields  = 0)
-            for x, y in [(0,0),
-                         (  0 ,-off), (-off,  0 ), (off,  0 ), ( 0 , off)]:
-                        #(-off,-off), (-off, off), (off,-off), (off, off)]:
+            for x, y in [(  0 ,-off), (-off,  0 ), (off,  0 ), ( 0 , off)]:
+                          #(-off,-off), (-off, off), (off,-off), (off, off)]:
                 targetX, targetY = location[:2]
                 unitLoc = (targetX + x, targetY + y)
                 newUnit = self.updateUnit(tag=0, base=True, # add units to scenario
@@ -97,22 +97,22 @@ class Scenario(object):
                     life     = 50,
                     shields  = 0)
         elif player.race == c.PROTOSS:
-            for i in range(0,2):
+            for i in range(0,4):
                 newUnit = self.updateUnit(tag=0, base=True, # add units to scenario
                     nametype = "Pylon",
                     code     = 60,
                     owner    = playerID,
-                    position = pickCloserLoc(location, 5*i), # the game handles attempting to place multiple units on top of each other
+                    position = pickCloserLoc(location, 4*i), # the game handles attempting to place multiple units on top of each other
                     energy   = 0,
                     life     = 200,
                     shields  = 200)
         elif player.race == c.TERRAN:
-            for i in range(0,2):
+            for i in range(0,4):
                 newUnit = self.updateUnit(tag=0, base=True, # add units to scenario
                     nametype = "SupplyDepot",
                     code     = 19,
                     owner    = playerID,
-                    position = pickCloserLoc(location, 5*i), # the game handles attempting to place multiple units on top of each other
+                    position = pickCloserLoc(location, 4*i), # the game handles attempting to place multiple units on top of each other
                     energy   = 0,
                     life     = 400,
                     shields  = 0)
