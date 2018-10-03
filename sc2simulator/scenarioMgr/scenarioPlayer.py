@@ -79,6 +79,15 @@ class ScenarioPlayer(object):
                 if supplyUnit.name == "Pylon": # protoss upgrade producing structures require pylon power
                     unitAbils[convertTechUnit(supplyUnit, owner=self.number,
                         position=u.position)] = [] # place the pylon directly next to the tech-producing unit
+            producerTechUnit = sc2techTree.getUnit(u.nametype)
+            if producerTechUnit.isAddon: # ensure addons have their parent building placed too adjacent to the addon
+                for name in re.findall("^([A-Z][a-z]+)", producerTechUnit.name): # identify the name fo the parent structure
+                    parent = sc2techTree.getUnit(name)
+                    uX, uY, uZ = u.position
+                    parentPos = (uX - 2.5, uY + 0.5, uZ)
+                    parentU = convertTechUnit(parent, owner=self.number,
+                        position=parentPos)
+                    unitAbils[parentU] = []
             for r in tech.requires:
                 if r.isUnit:
                     if not exists(r.mType.code, unitAbils):
@@ -96,7 +105,6 @@ class ScenarioPlayer(object):
         processedUpgrades = set()
         for tech in self.upgrades:
             getTechAbilities(tech, processedUpgrades, ret)
-            # TODO -- ensure addons have their parent building
         return ret
     ############################################################################
     def display(self, indent=0, display=True):
