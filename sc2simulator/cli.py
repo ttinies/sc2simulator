@@ -138,7 +138,6 @@ def main(options=None):
         scenarios = getSetup(specifiedMap, options, cfg)
         for scenario in scenarios:
             epoch = int(time.time()) # used for replay differentiation between each scenario
-            # TODO -- load scenario specific
             failure = False
             for curLoop in range(1, options.loops+1): # each loop of each scenario gets its own unique replay (count starting at one)
                 outFile = outTemplate%(epoch, curLoop)
