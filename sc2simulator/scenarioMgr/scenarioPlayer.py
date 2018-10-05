@@ -24,8 +24,9 @@ class ScenarioPlayer(object):
     ############################################################################
     def __str__(self): return self.__repr__()
     def __repr__(self):
-        return "<%s #%d units:%d upgrades:%d @ %s>"%(self.__class__.__name__,
-            self.number, self.numUnits, self.numUpgrades, self.position)
+        return "<%s #%d %s units:%d upgrades:%d @ %s>"%(self.__class__.__name__,
+            self.number, self.race, self.numUnits, self.numUpgrades,
+            self.position)
     ############################################################################
     @property
     def baseUnits(self):
