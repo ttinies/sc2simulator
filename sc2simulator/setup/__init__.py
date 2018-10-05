@@ -1,19 +1,20 @@
 """
-Copyright 2018 Versentiedge LLC, All Rights Reserved.
+Copyright (c) 2018 Versentiedge LLC
 
-This software, including all included modules and sub-packages, are proprietary.
-Said software is deemed confidential and is intended only to be used by
-Versentiedge LLC or its authorized affiliates.  Use of any software in
-any capacity or manner is strictly forbidden except when used in an official
-capacity by Versentiedge LLC.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-If you are not expressly allowed to view, use or distribute this software in
-writing by an official agent of Versentiedge LLC, you must delete all copies
-of this software, including any modifications thereof.
+     http://www.apache.org/licenses/LICENSE-2.0
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS-IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 """
 
 from sc2simulator.setup.functions import getSetup
