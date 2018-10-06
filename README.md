@@ -71,3 +71,7 @@ variations to enhance the player's learing speed.
    option.  Steps 2-4 are repeated for each loop of the same scenario.
 6. A replay is saved locally by each player for each scenario iteration.
 
+#### Examples
+
+`python -m sc2simulator --custom --unitsMax=7 --ground --players=test,blizzbot5_hard --ladder=True`
+
