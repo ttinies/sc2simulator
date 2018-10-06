@@ -16,7 +16,6 @@ from sc2maptool.cli import optionsParser as addMapOptions
 from sc2gameLobby import launcher
 from sc2gameLobby.gameConfig import Config
 from sc2gameLobby.setScenario import launchEditor
-from sc2gameLobby.versions import Version
 from sc2players import getPlayer, PlayerPreGame
 
 from sc2simulator.__version__ import __version__
@@ -100,16 +99,19 @@ def main(options=None):
         parser = optionsParser()
         options = parser.parse_args()
         sys.argv = sys.argv[:1] # remove all arguments to avoid problems with absl FLAGS :(
-    specifiedMap = selectMap(
+    try: specifiedMap = selectMap(
         options.mapname,
         excludeName =options.exclude,
         closestMatch=True, # force selection of at most one map
         **getSelectionParams(options))
+    except Exception as e:
+        print(e)
+        return
     outTempName = specifiedMap.name + "_%d_%d." + c.SC2_REPLAY_EXT
     outTemplate = os.path.join(options.replaydir, outTempName)
     if options.editor:
         launchEditor(specifiedMap) # run the editor using the game modification
-    elif options.regression:
+    if options.regression:
         batteries = options.test.split(",")
         raise NotImplementedError("TODO -- run each test battery")
     elif options.custom:
@@ -131,7 +133,6 @@ def main(options=None):
                      mode=c.types.GameModes(c.MODE_1V1),
                      opponents=playerNames[1:],
                      whichPlayer=thisPlayer.name,
-                     version=Version(), # always using the latest version
                      fogDisabled=True, # disable fog to be able to see, set and remove enemy units
                      **thisPlayer.initOptions, # ensure desired data is sent in callback
              )
