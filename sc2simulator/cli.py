@@ -111,7 +111,7 @@ def main(options=None):
     outTemplate = os.path.join(options.replaydir, outTempName)
     if options.editor:
         launchEditor(specifiedMap) # run the editor using the game modification
-    if options.regression:
+    elif options.regression:
         batteries = options.test.split(",")
         raise NotImplementedError("TODO -- run each test battery")
     elif options.custom:
