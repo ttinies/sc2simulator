@@ -1,4 +1,5 @@
 
+import glob
 import os
 import re
 import xml.etree.ElementTree
@@ -30,9 +31,16 @@ def xmlChildrenToDict(node):
 
 
 ################################################################################
-def getBankFilepath(bankName):
-    """identify the absolute path to the provided bankName"""
-    return os.path.join(c.PATH_BANKS, "%s.%s"%(bankName, c.SC2_BANK_EXT))
+def getBankFilepath(mapName):
+    """identify the absolute path to the intended bank given mapName"""
+    banks = glob.glob(os.path.join(c.PATH_BANKS, "*.%s"%(c.SC2_BANK_EXT)))
+    banks = [b for b in banks if re.search(
+                                    "^%s"%mapName,
+                                    os.path.basename(b),
+                                    flags=re.IGNORECASE)]
+    if banks:
+        return banks[0]
+    return os.path.join(c.PATH_BANKS, "%s.%s"%(mapName, c.SC2_BANK_EXT))
 
 
 ################################################################################
@@ -73,7 +81,7 @@ def parseBankXml(xmlpath, debug=False):
         if dataType == "UnitIndex":
             for key in s.getchildren(): # ensure all tags are represented as units in this scenario
                 tag = key.get("name")
-                scenario.addUnit(tag)
+                scenario.addUnit(tag, allowDuplicate=True) # duplicates are allowed because XML scenario data can be unordered
         elif dataType == "UnitData":
             for key in s.getchildren(): # load unit data for all players in this scenario
                 unitMeta = key.get("name").split("|")
@@ -85,8 +93,11 @@ def parseBankXml(xmlpath, debug=False):
                 u = scenario.updateUnit(unitTag, owner=playerID, **attrs)
         elif dataType == "Upgrades":
             for key in s.getchildren(): # ensure all tags are represented as units in this scenario
-                value = xmlChildrenToDict(key)["value"]
-                scenario.addUpgrade(playerID, value)
+                value = key.get("name")
+                try:  scenario.addUpgrade(playerID, value)
+                except NotImplementedError as e:
+                    print(("WARNING: cannot load scenario upgrade '%s' : %s")%(
+                        value, e))
         else:
             print("WARNING: skipped unknown data type: %s"%dataType)
     if debug:
