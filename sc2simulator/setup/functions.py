@@ -6,7 +6,7 @@ Fully define a 'random' generated setup for the players per specified conditions
 import random
 
 from sc2simulator import constants as c
-from sc2simulator.scenarioMgr import Scenario, parseBankXml, getBankPath
+from sc2simulator.scenarioMgr import Scenario, parseBankXml, getBankFilepath
 from sc2simulator.setup import mapLocations
 from sc2simulator.setup.mapLocations import convertStrToPoint, defineLocs
 from sc2simulator.setup.unitSelection import generateUpgrades
@@ -19,7 +19,7 @@ def getSetup(mapObj, options, cfg):
     scenarios = []
     if options.cases: # use preloaded cases
         try:
-            bankName = getBankPath(mapObj.name) # select the bank repository from the specified map
+            bankName = getBankFilepath(mapObj.name) # select the bank repository from the specified map
             bank = parseBankXml(bankName) # load the bank's defined scenarios
         except:
             print("ERROR: failed to load specified bank '%s'"%(mapObj.name))

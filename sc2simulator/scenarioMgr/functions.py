@@ -30,7 +30,7 @@ def xmlChildrenToDict(node):
 
 
 ################################################################################
-def getBankPath(bankName):
+def getBankFilepath(bankName):
     """identify the absolute path to the provided bankName"""
     return os.path.join(c.PATH_BANKS, "%s.%s"%(bankName, c.SC2_BANK_EXT))
 

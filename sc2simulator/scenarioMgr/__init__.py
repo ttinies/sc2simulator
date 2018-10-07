@@ -18,5 +18,5 @@ limitations under the License.
 """
 
 from sc2simulator.scenarioMgr.functions import Bank, Scenario
-from sc2simulator.scenarioMgr.functions import getBankPath, parseBankXml
+from sc2simulator.scenarioMgr.functions import getBankFilepath, parseBankXml
 
