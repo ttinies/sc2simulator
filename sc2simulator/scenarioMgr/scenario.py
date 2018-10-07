@@ -1,6 +1,12 @@
 
 import random
 
+try:
+    import sc2techTree # Versentiedge closed source package
+    techtree = sc2techTree.getLastTree()
+except Exception as e: # ModuleNotFoundError isn't available in python 3.5
+    techtree = None
+
 from sc2simulator import constants as c
 from sc2simulator.scenarioMgr.scenarioPlayer import ScenarioPlayer
 from sc2simulator.scenarioMgr.scenarioUnit import ScenarioUnit, convertTechUnit
@@ -22,7 +28,7 @@ class Scenario(object):
     def __str__(self):  return self.__repr__()
     def __repr__(self):
         return "<%s '%s' players:%s>"%(self.__class__.__name__,
-            self.name, list(self.players.keys()))
+            self.name, sorted(list(self.players.keys())))
     ############################################################################
     def addPlayer(self, idx, loc=None, race=None):
         """add a definition for a player within a Scenario"""
@@ -36,7 +42,7 @@ class Scenario(object):
         p = ScenarioPlayer(idx, self.units, upgradeList, pos=loc, race=race)
         self.players[idx] = p
     ############################################################################
-    def addUnit(self, tag=0, newUnit=None, **attrs):
+    def addUnit(self, tag=0, newUnit=None, allowDuplicate=False, **attrs):
         """define a unit within a Scenario"""
         ############################################################################
         def genTag(minVal=150):
@@ -49,8 +55,9 @@ class Scenario(object):
         if tag:     tag = int(tag) # ensure unit uid is always an integer
         else:       tag = genTag()
         if tag in self.units: # catch possible redundant definitions
-            print("WARNING: unit tag %d already exists in %s as %s"%(
-                tag, self, self.units[tag]))
+            if not allowDuplicate:
+                print("WARNING: unit tag %d already exists in %s as %s"%(
+                    tag, self, self.units[tag]))
             return
         if newUnit:
             if not isinstance(newUnit, ScenarioUnit):
@@ -65,6 +72,11 @@ class Scenario(object):
         """define an upgrade within a Scenario"""
         if player not in self.players:
             self.addPlayer(player)
+        if isinstance(upgrade, str):
+            if not techtree:
+                raise NotImplementedError(("upgrade '%s' cannot be defined "\
+                    "unless the sc2techTree package is available")%(upgrade))
+            upgrade = sc2techTree.getUpgrade(upgrade)
         self.upgrades[player].append(upgrade)
     ############################################################################
     def newBaseUnits(self, playerID):
