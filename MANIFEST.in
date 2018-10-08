@@ -1,1 +1,2 @@
 include README.md LICENSE
+recursive-include sc2simulator/mpqeditor_en *
