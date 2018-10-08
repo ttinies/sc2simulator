@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Bank version="1">
+    <Section name="TestCases">
+        <Key name="reapersVsLurkers">
+            <Value string=""/>
+        </Key>
+    </Section>
+    <Section name="reapersVsLurkers|P2|UnitData">
+        <Key name="53215233|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="52428801|Position">
+            <Value point="32.8461,30.8325"/>
+        </Key>
+        <Key name="44040194|Facing">
+            <Value fixed="-157.8295"/>
+        </Key>
+        <Key name="45088770|Position">
+            <Value point="30.8583,32.6284"/>
+        </Key>
+        <Key name="46137346|Position">
+            <Value point="30.14,32.695"/>
+        </Key>
+        <Key name="46137346|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="46399490|Position">
+            <Value point="29.667,33.2387"/>
+        </Key>
+        <Key name="44826626|Position">
+            <Value point="32.5021,31.7917"/>
+        </Key>
+        <Key name="52428801|Facing">
+            <Value fixed="4.6362"/>
+        </Key>
+        <Key name="52428801|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="45875202|Position">
+            <Value point="30.8381,31.9013"/>
+        </Key>
+        <Key name="52166657|Facing">
+            <Value fixed="-62.2045"/>
+        </Key>
+        <Key name="46923778|Facing">
+            <Value fixed="32.5305"/>
+        </Key>
+        <Key name="44040194|Position">
+            <Value point="33.3518,30.2145"/>
+        </Key>
+        <Key name="45350914|Position">
+            <Value point="27.845,34.3913"/>
+        </Key>
+        <Key name="45350914|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="51904513|Position">
+            <Value point="28.274,33.247"/>
+        </Key>
+        <Key name="51904513|Facing">
+            <Value fixed="-13.634"/>
+        </Key>
+        <Key name="52690945|Facing">
+            <Value fixed="143.4265"/>
+        </Key>
+        <Key name="44826626|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="45875202|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="53215233|Position">
+            <Value point="28.5285,34.4726"/>
+        </Key>
+        <Key name="46923778|Position">
+            <Value point="28.951,33.1228"/>
+        </Key>
+        <Key name="46923778|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="51642369|Facing">
+            <Value fixed="-88.8354"/>
+        </Key>
+        <Key name="52953089|Facing">
+            <Value fixed="-79.8706"/>
+        </Key>
+        <Key name="46399490|Facing">
+            <Value fixed="154.325"/>
+        </Key>
+        <Key name="51642369|Position">
+            <Value point="31.8071,31.372"/>
+        </Key>
+        <Key name="53477377|Facing">
+            <Value fixed="47.373"/>
+        </Key>
+        <Key name="53215233|Facing">
+            <Value fixed="8.822"/>
+        </Key>
+        <Key name="46137346|Facing">
+            <Value fixed="59.2053"/>
+        </Key>
+        <Key name="52953089|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="52690945|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="52166657|Position">
+            <Value point="31.7143,30.6896"/>
+        </Key>
+        <Key name="52166657|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="52690945|Position">
+            <Value point="27.5273,33.6872"/>
+        </Key>
+        <Key name="53477377|Unit">
+            <Type string="Raven"/>
+            <Shields fixed="0"/>
+            <Life fixed="140"/>
+            <Energy fixed="81.746"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="45350914|Facing">
+            <Value fixed="74.1247"/>
+        </Key>
+        <Key name="45088770|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="51904513|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="44040194|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="45088770|Facing">
+            <Value fixed="-171.98"/>
+        </Key>
+        <Key name="51642369|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="45875202|Facing">
+            <Value fixed="-154.9182"/>
+        </Key>
+        <Key name="44826626|Facing">
+            <Value fixed="-65.2587"/>
+        </Key>
+        <Key name="53477377|Position">
+            <Value point="32.4411,34.079"/>
+        </Key>
+        <Key name="52953089|Position">
+            <Value point="29.39,32.593"/>
+        </Key>
+        <Key name="46399490|Unit">
+            <Type string="Reaper"/>
+            <Shields fixed="0"/>
+            <Life fixed="60"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+    </Section>
+    <Section name="reapersVsLurkers|P2|UnitIndex">
+        <Key name="45350914">
+            <Value string=""/>
+        </Key>
+        <Key name="51904513">
+            <Value string=""/>
+        </Key>
+        <Key name="45875202">
+            <Value string=""/>
+        </Key>
+        <Key name="52166657">
+            <Value string=""/>
+        </Key>
+        <Key name="46923778">
+            <Value string=""/>
+        </Key>
+        <Key name="51642369">
+            <Value string=""/>
+        </Key>
+        <Key name="44040194">
+            <Value string=""/>
+        </Key>
+        <Key name="53477377">
+            <Value string=""/>
+        </Key>
+        <Key name="52690945">
+            <Value string=""/>
+        </Key>
+        <Key name="46399490">
+            <Value string=""/>
+        </Key>
+        <Key name="52428801">
+            <Value string=""/>
+        </Key>
+        <Key name="46137346">
+            <Value string=""/>
+        </Key>
+        <Key name="44826626">
+            <Value string=""/>
+        </Key>
+        <Key name="53215233">
+            <Value string=""/>
+        </Key>
+        <Key name="52953089">
+            <Value string=""/>
+        </Key>
+        <Key name="45088770">
+            <Value string=""/>
+        </Key>
+    </Section>
+    <Section name="reapersVsLurkers|P1|UnitData">
+        <Key name="46661634|Unit">
+            <Type string="LurkerMPBurrowed"/>
+            <Shields fixed="0"/>
+            <Life fixed="200"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="45613058|Facing">
+            <Value fixed="19.7863"/>
+        </Key>
+        <Key name="47185922|Position">
+            <Value point="34.4082,36.6254"/>
+        </Key>
+        <Key name="44302338|Facing">
+            <Value fixed="-86.3305"/>
+        </Key>
+        <Key name="44564482|Facing">
+            <Value fixed="-91.0217"/>
+        </Key>
+        <Key name="47185922|Unit">
+            <Type string="LurkerMPBurrowed"/>
+            <Shields fixed="0"/>
+            <Life fixed="200"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="46661634|Position">
+            <Value point="34.881,38.3818"/>
+        </Key>
+        <Key name="45613058|Position">
+            <Value point="32.8542,37.6525"/>
+        </Key>
+        <Key name="46661634|Facing">
+            <Value fixed="-35.5847"/>
+        </Key>
+        <Key name="44564482|Unit">
+            <Type string="LurkerMPBurrowed"/>
+            <Shields fixed="0"/>
+            <Life fixed="200"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="44302338|Unit">
+            <Type string="LurkerMPBurrowed"/>
+            <Shields fixed="0"/>
+            <Life fixed="200"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="47185922|Facing">
+            <Value fixed="74.9377"/>
+        </Key>
+        <Key name="45613058|Unit">
+            <Type string="LurkerMPBurrowed"/>
+            <Shields fixed="0"/>
+            <Life fixed="200"/>
+            <Energy fixed="0"/>
+            <XPCount int="0"/>
+        </Key>
+        <Key name="44302338|Position">
+            <Value point="36.3232,35.5134"/>
+        </Key>
+        <Key name="44564482|Position">
+            <Value point="36.3557,37.3266"/>
+        </Key>
+    </Section>
+    <Section name="reapersVsLurkers|P1|UnitIndex">
+        <Key name="45613058">
+            <Value string=""/>
+        </Key>
+        <Key name="47185922">
+            <Value string=""/>
+        </Key>
+        <Key name="44564482">
+            <Value string=""/>
+        </Key>
+        <Key name="44302338">
+            <Value string=""/>
+        </Key>
+        <Key name="46661634">
+            <Value string=""/>
+        </Key>
+    </Section>
+</Bank>
