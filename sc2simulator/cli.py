@@ -6,11 +6,13 @@ PURPOSE: simulate a 1v1 scenario to test player actions.
 import argparse
 import os
 import re
+import shutil
+import subprocess
 import sys
 import time
 
 from sc2ladderMgmt import getLadder
-from sc2maptool import selectMap
+from sc2maptool import selectMap, MapRecord
 from sc2maptool.cli import getSelectionParams
 from sc2maptool.cli import optionsParser as addMapOptions
 from sc2gameLobby import launcher
@@ -21,6 +23,7 @@ from sc2players import getPlayer, PlayerPreGame
 from sc2simulator.__version__ import __version__
 from sc2simulator import constants as c
 from sc2simulator.setup import getSetup
+from sc2simulator.setup.functions import getBankFilepath
 
 
 ################################################################################
@@ -46,6 +49,7 @@ def optionsParser(passedParser=None):
     addMapOptions(parser) # ensure map selection options are also added
     predefOptns = parser.add_argument_group('Predefined Scenario options (from the editor)')
     predefOptns.add_argument("--cases"          , default=""            , help="the specific sc2 bank setup names (comma separated)", metavar="NAMES")
+    predefOptns.add_argument("--cleandelay"     , default=10,   type=int, help="number of seconds before temporary files are removed allowing the editor to launch successfully", metavar="INT")
     newGenOptns = parser.add_argument_group('Dynamically generated composition options')
     newGenOptns.add_argument("--race"           , default=c.RANDOM, choices=c.types.SelectRaces.ALLOWED_TYPES,
                                                                           help="the race this agent will play (default: random)")
@@ -110,7 +114,46 @@ def main(options=None):
     outTempName = specifiedMap.name + "_%d_%d." + c.SC2_REPLAY_EXT
     outTemplate = os.path.join(options.replaydir, outTempName)
     if options.editor:
-        launchEditor(specifiedMap) # run the editor using the game modification
+        bankFile = getBankFilepath(specifiedMap.name)
+        if os.path.isfile(bankFile): # this map has saved previous scenarios
+            bankName    = re.sub("\..*?$", "", os.path.basename(bankFile))
+            bankDir     = os.path.dirname(bankFile)
+            dirTime     = re.sub("\.", "_", str(time.time()))
+            tmpDir      = os.path.join(bankDir, "%s_%s"%(bankName, dirTime))
+            tmpXml      = os.path.join(tmpDir, c.FILE_BANKLIST)
+            tmpName     = "%s.%s"%(bankName, c.SC2_MAP_EXT)
+            tmpMapPath  = os.path.join(tmpDir, tmpName)
+            cfg         = Config()
+            dstMapDir   = cfg.installedApp.mapsDir
+            dstMapPath  = os.path.join(dstMapDir, tmpName)
+            if os.path.isdir(tmpDir):
+                shutil.rmtree(tmpDir)
+            try:
+                os.makedirs(tmpDir)
+                shutil.copyfile(specifiedMap.path, tmpMapPath) # copy the original map file for modification
+                with open(tmpXml, "w") as f: # generate temporary xml data
+                    f.write(c.BANK_DATA%bankName)
+                if cfg.is64bit: mpqApp = c.PATH_MPQ_EDITOR_64BIT
+                else:           mpqApp = c.PATH_MPQ_EDITOR_32BIT
+                cmd = c.MPQ_CMD%(mpqApp, tmpMapPath, tmpXml, c.FILE_BANKLIST)
+                x = subprocess.call(cmd) # modify a temporary mapfile using the mpq editor
+                print("Loaded %s scenarios defined previously."%(bankName))
+                if os.path.isfile(dstMapPath): # always ensure the destination mapfile is the modified version
+                    os.remove(dstMapPath)
+                shutil.copyfile(tmpMapPath, dstMapPath) # relocate the temporary map file into the maps folder
+                tmpRecord = MapRecord(specifiedMap.name, dstMapPath, {})
+                launchEditor(tmpRecord) # launch the editor using a temporary, modified map that includes the previously defined SC2Bank scenario data
+            finally:
+                time.sleep(options.cleandelay) # wait for the editor to launch before removing temporary files
+                if os.path.isdir(tmpDir): # always remove the temporary map and XML files
+                    shutil.rmtree(tmpDir)
+                while True:
+                    try:
+                        os.remove(dstMapPath) # always remove the temporary map mpq file
+                        break
+                    except:  time.sleep(2) # continue trying until the editor closes and the deletion is successful
+        else:
+            launchEditor(specifiedMap) # run the editor using the game modification
     elif options.regression:
         batteries = options.test.split(",")
         raise NotImplementedError("TODO -- run each test battery")
