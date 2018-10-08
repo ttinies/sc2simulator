@@ -137,7 +137,7 @@ def main(options=None):
                 else:           mpqApp = c.PATH_MPQ_EDITOR_32BIT
                 cmd = c.MPQ_CMD%(mpqApp, tmpMapPath, tmpXml, c.FILE_BANKLIST)
                 x = subprocess.call(cmd) # modify a temporary mapfile using the mpq editor
-                print("Loaded %s scenarios defined previously."%(bankName))
+                print("Loaded previously defined %s scenarios."%(bankName))
                 if os.path.isfile(dstMapPath): # always ensure the destination mapfile is the modified version
                     os.remove(dstMapPath)
                 shutil.copyfile(tmpMapPath, dstMapPath) # relocate the temporary map file into the maps folder
