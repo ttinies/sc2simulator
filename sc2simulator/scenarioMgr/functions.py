@@ -109,5 +109,6 @@ def parseBankXml(xmlpath, debug=False):
             for p in scenario.players.values():
                 p.display()
             print("*"*80)
+    retBank.initPlayers()
     return retBank
 
