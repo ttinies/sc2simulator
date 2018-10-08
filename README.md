@@ -75,3 +75,8 @@ variations to enhance the player's learing speed.
 
 `python -m sc2simulator --custom --unitsMax=7 --ground --players=test,blizzbot5_hard --ladder=True`
 
+#### Warnings
+
+If your installed Starcraft 2 Maps directory (e.g. C:\Program Files (x86)\Starcraft II\Maps),
+these maps can be deleted by the editor.  Maps of the same name in subfolders beneath
+Maps\... are safe.
