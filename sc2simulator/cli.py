@@ -12,7 +12,8 @@ import sys
 import time
 
 from sc2ladderMgmt import getLadder
-from sc2maptool import selectMap, MapRecord
+from sc2maptool import selectMap
+from sc2maptool.mapRecord import MapRecord
 from sc2maptool.cli import getSelectionParams
 from sc2maptool.cli import optionsParser as addMapOptions
 from sc2gameLobby import launcher
