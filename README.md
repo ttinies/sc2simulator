@@ -5,6 +5,16 @@
 
 # [Starcraft 2 Scenario Simulator](https://github.com/ttinies/sc2simulator)
 
+#### Editor Screenshots
+
+![editor -- roach is having a bad day](https://github.com/ttinies/sc2simulator/blob/master/docs/example_editor_01.jpg?raw=true)
+![reapers vs lurkers](https://github.com/ttinies/sc2simulator/blob/master/docs/example_editor_03.jpg?raw=true)
+![big choke battle](https://github.com/ttinies/sc2simulator/blob/master/docs/example_editor_02.jpg?raw=true)
+
+#### Example simulator gameplay
+
+(Reserved)
+
 ## About
 
 This package's purpose to enable an interface for multiple players with various
@@ -13,7 +23,7 @@ uses of this package are diverse, including AI agent training.
 
 #### Status
 
-**This package has reached beta test.**  Reference the defined [issues](https://github.com/ttinies/sc2simulator/issues)
+**This package is in beta testing.**  Reference the defined [issues](https://github.com/ttinies/sc2simulator/issues)
 to get a better idea of what is and is not working.  If something is discovered
 to not be working, kindly do submit a new issue!
 
@@ -98,3 +108,4 @@ package.  If interested, petition @ttinies.
 
 * When playing with your AI/bot, your bot may need to wait a few moments in-game
 before the scenario is fully setup.
+
