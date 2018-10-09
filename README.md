@@ -83,7 +83,7 @@ variations to enhance the player's learing speed.
 `python -m sc2simulator --cases=<yourScenarioName> --mapname=MechDepot --players=test,blizzbot5_hard`
 
 NOTE: selecting player 'test' or 'defaulthuman' will allow you to play as a human.
-Playing with your own custom agent requires aditional player setup to define
+Playing with your own custom agent requires additional player setup to define
 the agents setup and execution/callback functions.
 
 #### Cautions
