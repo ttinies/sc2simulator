@@ -9,7 +9,7 @@
 
 This package's purpose to enable an interface for multiple players with various
 Starcraft 2 agents to play a variety of pre-built or generated scenarios.  The
-uses of this package are diverse, including AI aganet training.
+uses of this package are diverse, including AI agent training.
 
 #### Status
 
@@ -23,7 +23,8 @@ While a variety of situations can be encountered over the course of many, many
 melee games, there are several problems with this approach.  Specific situations
 occur infrequently, possibly once in the course of a match (which normally
 elapses ~20 minutes, up to over an hour at realtime speed) and may not occur
-even once in many hundreds of matches.  This makes training
+even once in many hundreds of matches.  This makes training difficult, slow
+and require significantly more data.
 
 By allowing situations to be created artificially, the user may test their
 agent's functionality against it.  A specific battery of tests can be created
