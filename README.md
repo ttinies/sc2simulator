@@ -13,7 +13,7 @@ uses of this package are diverse, including AI agent training.
 
 #### Status
 
-**This package is under active development.**  Reference the defined [issues](https://github.com/ttinies/sc2simulator/issues)
+**This package has reached beta test.**  Reference the defined [issues](https://github.com/ttinies/sc2simulator/issues)
 to get a better idea of what is and is not working.  If something is discovered
 to not be working, kindly do submit a new issue!
 
