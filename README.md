@@ -91,3 +91,6 @@ beneath Maps\... are safe.
 * Including tech upgrades and some features (such as balancing on mineral cost,
 unit dps, etc.) are only available if you have also access to the sc2techTree
 package.  If interested, petition @ttinies.
+
+* When playing with your AI/bot, your bot may need to wait a few moments in-game
+before the scenario is fully setup.
