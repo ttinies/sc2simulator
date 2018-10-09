@@ -43,7 +43,7 @@ def optionsParser(passedParser=None):
     mainOptions.add_argument("--join"           , action="store_true"   , help="join another player's custom scenarior setup (your race is determined by the host)")
     simControlO = parser.add_argument_group('Gameplay control options')
     simControlO.add_argument("--repeat"         , default=1,    type=int, help="the number of learning iterations performed per test.", metavar="INT")
-    simControlO.add_argument("--duration"       , default=c.DEF_DURATION, help="how long this generated scenario should last (default: %d)"%c.DEF_DURATION, metavar="INT")
+    simControlO.add_argument("--duration"       , default=c.DEF_DURATION, type=float, help="how long this generated scenario should last (default: %d)"%c.DEF_DURATION, metavar="INT")
     simControlO.add_argument("--players"        , default=""            , help="the ladder player name(s) to control a player (comma separated).", metavar="NAMES")
     simControlO.add_argument("--replaydir"      , default=c.PATH_NEW_MATCH_DATA,
                                                                           help="the path where generated replays will be stored.", metavar="PATH")
