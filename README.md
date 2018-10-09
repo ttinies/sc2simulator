@@ -71,12 +71,23 @@ variations to enhance the player's learing speed.
    option.  Steps 2-4 are repeated for each loop of the same scenario.
 6. A replay is saved locally by each player for each scenario iteration.
 
-#### Examples
+#### Example Commands
 
-`python -m sc2simulator --custom --unitsMax=7 --ground --players=test,blizzbot5_hard --ladder=True`
+`python -m sc2simulator --editor --mapname=parasite`
+`python -m sc2simulator --custom --unitsMax=7 --ground --players=defaulthuman,blizzbot5_hard --ladder=True`
+`python -m sc2simulator --race=zerg --enemyrace=terran --defense=3 --year=2018 --season=3 --players=defaulthuman,blizzbot5_hard`
+`python -m sc2simulator --cases=<yourScenarioName> --mapname=MechDepot --players=test,blizzbot5_hard`
 
-#### Warnings
+NOTE: selecting player 'test' or 'defaulthuman' will allow you to play as a human.
+Playing with your own custom agent requires aditional player setup to define
+the agents setup and execution/callback functions.
 
-If your installed Starcraft 2 Maps directory (e.g. C:\Program Files (x86)\Starcraft II\Maps),
-these maps can be deleted by the editor.  Maps of the same name in subfolders beneath
-Maps\... are safe.
+#### Cautions
+
+* If your installed Starcraft 2 Maps directory (e.g. C:\Program Files (x86)\Starcraft II\Maps),
+these maps can be deleted by the editor.  Maps of the same name in subfolders
+beneath Maps\... are safe.
+
+* Including tech upgrades and some features (such as balancing on mineral cost,
+unit dps, etc.) are only available if you have also access to the sc2techTree
+package.  If interested, petition @ttinies.
