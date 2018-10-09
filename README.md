@@ -75,8 +75,11 @@ variations to enhance the player's learing speed.
 #### Example Commands
 
 `python -m sc2simulator --editor --mapname=parasite`
+
 `python -m sc2simulator --custom --unitsMax=7 --ground --players=defaulthuman,blizzbot5_hard --ladder=True`
+
 `python -m sc2simulator --race=zerg --enemyrace=terran --defense=3 --year=2018 --season=3 --players=defaulthuman,blizzbot5_hard`
+
 `python -m sc2simulator --cases=<yourScenarioName> --mapname=MechDepot --players=test,blizzbot5_hard`
 
 NOTE: selecting player 'test' or 'defaulthuman' will allow you to play as a human.
